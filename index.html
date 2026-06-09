@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Senior 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#fff9f0;
+  --pink:#ff6b9d;
+  --yellow:#ffd166;
+  --mint:#06d6a0;
+  --sky:#4cc9f0;
+  --purple:#9b5de5;
+  --orange:#f77f00;
+  --red:#ef233c;
+  --cream:#fff3e0;
+  --dark:#2d1b4e;
+  --outline:#2d1b4e;
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--dark);}
+
+/* ── CONFETTI CANVAS ── */
+#cc{position:fixed;inset:0;pointer-events:none;z-index:9999;}
+
+/* ── PAGES ── */
+.page{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .6s ease;
+  overflow:hidden;
+}
+.page.active{opacity:1;pointer-events:all;}
+
+/* ── BACKGROUND PATTERN ── */
+.bg-dots{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(45,27,78,.08) 1.5px,transparent 1.5px);
+  background-size:28px 28px;
+}
+
+/* ── BUNTING ── */
+.bunting{position:absolute;top:0;left:0;width:100%;pointer-events:none;}
+
+/* ── BACK BTN ── */
+.back-btn{
+  position:absolute;top:22px;left:22px;z-index:20;
+  display:flex;align-items:center;gap:6px;
+  background:var(--dark);border:none;border-radius:50px;
+  padding:7px 16px;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;
+  color:#fff;letter-spacing:.05em;
+  box-shadow:3px 3px 0 rgba(0,0,0,0.2);
+  transition:transform .15s,box-shadow .15s;
+}
+.back-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(0,0,0,0.25);}
+.back-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 rgba(0,0,0,0.2);}
+
+/* ── PAGE COUNTER ── */
+.pg-count{
+  position:absolute;top:26px;right:26px;z-index:20;
+  background:var(--yellow);border:2.5px solid var(--outline);border-radius:50px;
+  padding:5px 14px;font-size:.75rem;font-weight:800;color:var(--dark);
+  box-shadow:3px 3px 0 var(--outline);
+}
+
+/* ── HEADING ── */
+.main-title{
+  font-family:'Fredoka One',cursive;
+  font-size:2.6rem;color:var(--dark);
+  text-align:center;line-height:1.15;
+  -webkit-text-stroke:1.5px var(--dark);
+}
+.main-title span{-webkit-text-stroke:0;}
+.sub-label{
+  font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple);margin-top:4px;text-align:center;
+}
+
+/* ── CTA BUTTON ── */
+.cta{
+  margin-top:1.4rem;
+  padding:.75rem 2.2rem;
+  background:var(--pink);
+  border:2.5px solid var(--outline);border-radius:50px;
+  font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:800;
+  color:#fff;cursor:pointer;
+  box-shadow:4px 4px 0 var(--outline);
+  transition:transform .15s,box-shadow .15s,background .15s;
+  letter-spacing:.04em;
+}
+.cta:hover{background:#ff4f8b;transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--outline);}
+.cta:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--outline);}
+.cta.green{background:var(--mint);color:var(--dark);}
+.cta.green:hover{background:#04c492;}
+.cta.yellow{background:var(--yellow);color:var(--dark);}
+.cta.yellow:hover{background:#ffc600;}
+.cta.purple{background:var(--purple);color:#fff;}
+.cta.purple:hover{background:#8049d0;}
+.cta.hidden{opacity:0;pointer-events:none;transform:translateY(10px);}
+.cta.visible{opacity:1;pointer-events:all;transform:translateY(0);transition:opacity .4s,transform .4s,box-shadow .15s;}
+
+/* ── FLOATING DECO ITEMS ── */
+.deco{position:absolute;pointer-events:none;}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-10px) rotate(var(--r,0deg))}}
+@keyframes bob2{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+@keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes pop-in{0%{transform:scale(0) rotate(-10deg);opacity:0}70%{transform:scale(1.1) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0deg);opacity:1}}
+
+/* ── GIFT PAGE ── */
+.gift-container{position:relative;cursor:pointer;transition:transform .2s;}
+.gift-container:hover{transform:scale(1.04) rotate(1deg);}
+.gift-container:active{transform:scale(.97);}
+.gift-lid{transform-origin:center bottom;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s;}
+.opened .gift-lid{transform:translateY(-100px) rotate(-18deg);opacity:0;}
+
+.burst-msg{
+  position:absolute;left:50%;transform:translateX(-50%) scale(0);
+  bottom:calc(100% + 10px);
+  background:var(--yellow);border:3px solid var(--outline);border-radius:16px;
+  padding:12px 22px;white-space:nowrap;
+  font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--dark);
+  box-shadow:5px 5px 0 var(--outline);
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+  opacity:0;
+}
+.burst-msg::after{
+  content:'';position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  border:7px solid transparent;border-top-color:var(--outline);
+}
+.burst-msg::before{
+  content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--yellow);z-index:1;
+}
+.burst-msg.show{transform:translateX(-50%) scale(1);opacity:1;}
+
+/* ── CANDLE RING ── */
+.ring-wrap{position:relative;width:56px;height:56px;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.rg{fill:none;stroke:rgba(45,27,78,.12);stroke-width:4;}
+.rf{fill:none;stroke:var(--pink);stroke-width:4;stroke-linecap:round;stroke-dasharray:158;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;}
+.rn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--dark);}
+
+/* ── CUT STATUS ── */
+#cutStatus{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-top:.5rem;min-height:1.2em;text-align:center;}
+
+/* ── CARD SCENE ── */
+/* ── COTTAGECORE CARD PAGE ── */
+/* string lights top */
+.string-lights{position:absolute;top:0;left:0;width:100%;pointer-events:none;z-index:4;}
+/* wooden table shelf */
+.wood-shelf{
+  position:absolute;bottom:0;left:0;right:0;height:26%;
+  background:linear-gradient(180deg,#c8965a 0%,#b07840 60%,#8a5c2a 100%);
+  border-top:4px solid #7a4c1c;
+}
+.wood-grain{position:absolute;inset:0;opacity:.18;background:repeating-linear-gradient(95deg,transparent 0px,transparent 18px,rgba(0,0,0,.3) 18px,rgba(0,0,0,.3) 19px);}
+/* card scene */
+.card-scene{
+  position:relative;
+  width:360px;height:310px;
+  cursor:pointer;
+  perspective:1100px;
+  z-index:10;
+}
+.card-inside{
+  position:absolute;inset:0;border-radius:14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:7px;padding:20px 24px;
+  background:linear-gradient(145deg,#fdf8f0,#f8f0e4);
+  text-align:center;
+  z-index:0;
+}
+.card-greeting{font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;color:#3d2a1a;line-height:1.5;font-style:italic;}
+.card-body{font-size:.7rem;font-weight:600;color:#6b4c30;line-height:1.9;letter-spacing:.04em;}
+.card-sig{font-family:'Playfair Display',Georgia,serif;font-size:.9rem;color:#8b6040;font-style:italic;}
+.door-left{
+  position:absolute;top:0;left:0;width:50%;height:100%;
+  border-radius:14px 0 0 14px;
+  transform-origin:left center;
+  transform-style:preserve-3d;
+  transition:transform 1s cubic-bezier(.4,0,.2,1);
+  z-index:2;overflow:hidden;
+}
+.door-left.open{transform:rotateY(-178deg);}
+.door-right{
+  position:absolute;top:0;right:0;width:50%;height:100%;
+  border-radius:0 14px 14px 0;
+  transform-origin:right center;
+  transform-style:preserve-3d;
+  transition:transform 1s cubic-bezier(.4,0,.2,1);
+  z-index:2;overflow:hidden;
+}
+.door-right.open{transform:rotateY(178deg);}
+@keyframes fade-pulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.4;r:4}50%{opacity:1;r:5.5}}
+@keyframes gentle-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+
+/* ── CANVAS ── */
+#cuttingCanvas{display:block;border-radius:12px;border:3px solid var(--outline);box-shadow:5px 5px 0 var(--outline);}
+</style>
+</head>
+<body>
+<canvas id="cc"></canvas>
+
+<!-- ════ PAGE 1 — GIFT ════ -->
+<div class="page active" id="p1">
+  <div class="bg-dots"></div>
+  <svg class="bunting" viewBox="0 0 800 80" fill="none" preserveAspectRatio="none">
+    <path d="M0 10 Q100 60 200 10 Q300 60 400 10 Q500 60 600 10 Q700 60 800 10" stroke="#2d1b4e" stroke-width="2.5" fill="none"/>
+    <polygon points="80,10 120,10 100,52" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="180,14 220,14 200,56" fill="#ffd166" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="280,10 320,10 300,52" fill="#06d6a0" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="380,14 420,14 400,56" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="480,10 520,10 500,52" fill="#9b5de5" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="580,14 620,14 600,56" fill="#f77f00" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="680,10 720,10 700,52" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="2"/>
+  </svg>
+  <div class="pg-count">01 / 03</div>
+
+  <!-- floating balloons left -->
+  <svg class="deco" style="left:30px;top:80px;animation:bob2 3.2s ease-in-out infinite;--r:-8deg" width="55" height="80" viewBox="0 0 55 80">
+    <ellipse cx="27" cy="30" rx="22" ry="28" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="2.5"/>
+    <path d="M27 58 Q24 65 27 72 Q30 79 27 80" stroke="#2d1b4e" stroke-width="2" fill="none"/>
+    <ellipse cx="19" cy="22" rx="6" ry="8" fill="rgba(255,255,255,.35)" transform="rotate(-20 19 22)"/>
+  </svg>
+  <svg class="deco" style="left:15px;top:200px;animation:bob 4s ease-in-out infinite;--r:5deg" width="44" height="65" viewBox="0 0 44 65">
+    <ellipse cx="22" cy="24" rx="18" ry="22" fill="#ffd166" stroke="#2d1b4e" stroke-width="2.5"/>
+    <path d="M22 46 Q19 53 22 60" stroke="#2d1b4e" stroke-width="2" fill="none"/>
+    <ellipse cx="16" cy="17" rx="4" ry="6" fill="rgba(255,255,255,.35)" transform="rotate(-20 16 17)"/>
+  </svg>
+  <!-- floating balloons right -->
+  <svg class="deco" style="right:25px;top:70px;animation:bob 3.6s ease-in-out infinite;--r:6deg" width="55" height="80" viewBox="0 0 55 80">
+    <ellipse cx="27" cy="30" rx="22" ry="28" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="2.5"/>
+    <path d="M27 58 Q24 65 27 72 Q30 79 27 80" stroke="#2d1b4e" stroke-width="2" fill="none"/>
+    <ellipse cx="19" cy="22" rx="6" ry="8" fill="rgba(255,255,255,.35)" transform="rotate(-20 19 22)"/>
+  </svg>
+  <svg class="deco" style="right:55px;top:210px;animation:bob2 4.4s ease-in-out infinite;--r:-5deg" width="44" height="65" viewBox="0 0 44 65">
+    <ellipse cx="22" cy="24" rx="18" ry="22" fill="#9b5de5" stroke="#2d1b4e" stroke-width="2.5"/>
+    <path d="M22 46 Q19 53 22 60" stroke="#2d1b4e" stroke-width="2" fill="none"/>
+    <ellipse cx="16" cy="17" rx="4" ry="6" fill="rgba(255,255,255,.35)" transform="rotate(-20 16 17)"/>
+  </svg>
+
+  <!-- stars / sparkles deco -->
+  <svg class="deco" style="right:100px;top:130px;animation:spin-slow 6s linear infinite" width="28" height="28" viewBox="0 0 28 28">
+    <polygon points="14,2 16.5,10.5 25,10.5 18.5,16 20.5,24.5 14,19.5 7.5,24.5 9.5,16 3,10.5 11.5,10.5" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.8"/>
+  </svg>
+  <svg class="deco" style="left:90px;top:160px;animation:spin-slow 8s linear infinite reverse" width="22" height="22" viewBox="0 0 22 22">
+    <polygon points="11,1 13,8 20,8 14.5,12.5 16.5,20 11,15.5 5.5,20 7.5,12.5 2,8 9,8" fill="#06d6a0" stroke="#2d1b4e" stroke-width="1.6"/>
+  </svg>
+  <svg class="deco" style="left:50px;bottom:120px;animation:spin-slow 5s linear infinite" width="18" height="18" viewBox="0 0 18 18">
+    <polygon points="9,1 10.5,6.5 16,6.5 11.5,10 13,16 9,12.5 5,16 6.5,10 2,6.5 7.5,6.5" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.5"/>
+  </svg>
+  <svg class="deco" style="right:60px;bottom:130px;animation:spin-slow 7s linear infinite reverse" width="20" height="20" viewBox="0 0 20 20">
+    <polygon points="10,1 12,7.5 18.5,7.5 13.5,11.5 15,18 10,14 5,18 6.5,11.5 1.5,7.5 8,7.5" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="1.5"/>
+  </svg>
+
+  <!-- floating dots -->
+  <svg class="deco" style="left:140px;top:105px" width="12" height="12"><circle cx="6" cy="6" r="5" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.5"/></svg>
+  <svg class="deco" style="right:130px;top:185px" width="10" height="10"><circle cx="5" cy="5" r="4" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.5"/></svg>
+  <svg class="deco" style="left:200px;bottom:140px" width="14" height="14"><circle cx="7" cy="7" r="6" fill="#9b5de5" stroke="#2d1b4e" stroke-width="1.5"/></svg>
+  <svg class="deco" style="right:170px;bottom:100px" width="10" height="10"><circle cx="5" cy="5" r="4" fill="#06d6a0" stroke="#2d1b4e" stroke-width="1.5"/></svg>
+
+  <!-- GIFT BOX SVG -->
+  <div style="position:relative;display:flex;flex-direction:column;align-items:center;margin-top:20px">
+    <div class="burst-msg" id="burst">🎉 Happy Birthday Senior! 🎉</div>
+    <div class="gift-container" id="giftBox" onclick="openGift()">
+      <svg width="200" height="210" viewBox="0 0 200 210" fill="none">
+        <!-- shadow -->
+        <ellipse cx="100" cy="205" rx="72" ry="8" fill="rgba(45,27,78,.12)"/>
+        <!-- BOX BODY -->
+        <rect x="18" y="105" width="164" height="100" rx="6" fill="#ffd166" stroke="#2d1b4e" stroke-width="3"/>
+        <!-- body sheen -->
+        <rect x="18" y="105" width="70" height="100" rx="0" fill="rgba(255,255,255,.15)"/>
+        <!-- body ribbon V -->
+        <rect x="91" y="105" width="18" height="100" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="2"/>
+        <!-- body ribbon H -->
+        <rect x="18" y="140" width="164" height="18" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="2"/>
+        <!-- polka dots on box -->
+        <circle cx="50" cy="125" r="5" fill="rgba(255,255,255,.4)"/>
+        <circle cx="155" cy="133" r="4" fill="rgba(255,255,255,.4)"/>
+        <circle cx="60" cy="175" r="5" fill="rgba(255,255,255,.4)"/>
+        <circle cx="148" cy="170" r="4" fill="rgba(255,255,255,.4)"/>
+        <circle cx="38" cy="190" r="3" fill="rgba(255,255,255,.4)"/>
+        <circle cx="167" cy="190" r="3" fill="rgba(255,255,255,.4)"/>
+
+        <!-- LID GROUP -->
+        <g class="gift-lid" id="giftLid">
+          <rect x="10" y="74" width="180" height="36" rx="6" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="3"/>
+          <rect x="10" y="74" width="70" height="36" fill="rgba(255,255,255,.12)" rx="6"/>
+          <!-- lid ribbon H -->
+          <rect x="10" y="87" width="180" height="10" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.5"/>
+          <!-- BOW left loop -->
+          <ellipse cx="78" cy="68" rx="24" ry="14" fill="#ffd166" stroke="#2d1b4e" stroke-width="2.5" transform="rotate(-22 78 68)"/>
+          <!-- BOW right loop -->
+          <ellipse cx="122" cy="68" rx="24" ry="14" fill="#ffd166" stroke="#2d1b4e" stroke-width="2.5" transform="rotate(22 122 68)"/>
+          <!-- BOW center knot -->
+          <ellipse cx="100" cy="72" rx="16" ry="12" fill="#f77f00" stroke="#2d1b4e" stroke-width="2.5"/>
+          <ellipse cx="100" cy="71" rx="7" ry="5" fill="rgba(255,255,255,.35)"/>
+          <!-- streamer left -->
+          <path d="M88 82 Q70 96 62 105" stroke="#ffd166" stroke-width="5" stroke-linecap="round"/>
+          <!-- streamer right -->
+          <path d="M112 82 Q130 96 138 105" stroke="#ffd166" stroke-width="5" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <p style="font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--purple);margin-top:10px;animation:fade-pulse 2s infinite" id="hint1">✦ click to unwrap ✦</p>
+    <button class="cta green hidden" id="cta1" onclick="goto(2)">🎂 See the Cake →</button>
+  </div>
+</div>
+
+<!-- ════ PAGE 2 — CAKE + CANDLE ════ -->
+<div class="page" id="p2">
+  <div class="bg-dots"></div>
+  <svg class="bunting" viewBox="0 0 800 80" fill="none" preserveAspectRatio="none">
+    <path d="M0 10 Q100 60 200 10 Q300 60 400 10 Q500 60 600 10 Q700 60 800 10" stroke="#2d1b4e" stroke-width="2.5" fill="none"/>
+    <polygon points="80,10 120,10 100,52" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="180,14 220,14 200,56" fill="#9b5de5" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="280,10 320,10 300,52" fill="#ffd166" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="380,14 420,14 400,56" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="480,10 520,10 500,52" fill="#06d6a0" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="580,14 620,14 600,56" fill="#f77f00" stroke="#2d1b4e" stroke-width="2"/>
+    <polygon points="680,10 720,10 700,52" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="2"/>
+  </svg>
+  <button class="back-btn" onclick="goto(1)">← Back</button>
+  <div class="pg-count">02 / 03</div>
+
+  <!-- side deco -->
+  <svg class="deco" style="left:20px;top:100px;animation:bob2 3.5s ease-in-out infinite;--r:-6deg" width="50" height="72"><ellipse cx="25" cy="26" rx="20" ry="25" fill="#06d6a0" stroke="#2d1b4e" stroke-width="2.5"/><path d="M25 51 Q22 58 25 65" stroke="#2d1b4e" stroke-width="2" fill="none"/><ellipse cx="18" cy="19" rx="5" ry="7" fill="rgba(255,255,255,.35)" transform="rotate(-20 18 19)"/></svg>
+  <svg class="deco" style="right:20px;top:90px;animation:bob 4s ease-in-out infinite;--r:7deg" width="50" height="72"><ellipse cx="25" cy="26" rx="20" ry="25" fill="#f77f00" stroke="#2d1b4e" stroke-width="2.5"/><path d="M25 51 Q22 58 25 65" stroke="#2d1b4e" stroke-width="2" fill="none"/><ellipse cx="18" cy="19" rx="5" ry="7" fill="rgba(255,255,255,.35)" transform="rotate(-20 18 19)"/></svg>
+  <svg class="deco" style="left:60px;bottom:100px;animation:spin-slow 7s linear infinite" width="26" height="26" viewBox="0 0 26 26"><polygon points="13,1 15.5,9 23.5,9 17.5,14.5 19.5,22.5 13,18 6.5,22.5 8.5,14.5 2.5,9 10.5,9" fill="#ffd166" stroke="#2d1b4e" stroke-width="2"/></svg>
+  <svg class="deco" style="right:55px;bottom:110px;animation:spin-slow 5s linear infinite reverse" width="22" height="22" viewBox="0 0 22 22"><polygon points="11,1 13,8 20,8 14.5,12.5 16.5,20 11,15.5 5.5,20 7.5,12.5 2,8 9,8" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.8"/></svg>
+  <!-- note music deco -->
+  <svg class="deco" style="left:30px;bottom:200px" width="30" height="36" viewBox="0 0 30 36"><text x="0" y="28" font-size="28">🎵</text></svg>
+  <svg class="deco" style="right:35px;bottom:180px" width="30" height="36" viewBox="0 0 30 36"><text x="0" y="28" font-size="28">🎶</text></svg>
+
+  <!-- title -->
+  <div style="text-align:center;margin-bottom:.7rem">
+    <div class="main-title" style="font-size:1.9rem;color:var(--purple)">Make a Wish!</div>
+    <div class="sub-label">close your eyes & wish…</div>
+  </div>
+
+  <!-- countdown ring -->
+  <div class="ring-wrap" style="margin-bottom:.6rem">
+    <svg width="56" height="56" viewBox="0 0 56 56">
+      <circle class="rg" cx="28" cy="28" r="23"/>
+      <circle class="rf" id="ringFg" cx="28" cy="28" r="23"/>
+    </svg>
+    <div class="rn" id="ringNum">5</div>
+  </div>
+
+  <!-- 2D CAKE SVG — single layer, 6 candles -->
+  <svg width="290" height="240" viewBox="0 0 290 240" fill="none">
+    <!-- drop shadow -->
+    <ellipse cx="145" cy="236" rx="100" ry="10" fill="rgba(45,27,78,.12)"/>
+
+    <!-- CANDLE 1 pink x=68 -->
+    <g id="flameG1">
+      <path d="M68 55 C63 63 60 72 62 79 C65 87 72 87 75 79 C78 71 75 63 68 55Z" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.2">
+        <animateTransform attributeName="transform" type="rotate" values="-3 68 79;3 68 79;-3 68 79" dur=".75s" repeatCount="indefinite"/>
+      </path>
+      <path d="M68 61 C65 67 64 75 66 79 C67 83 70 83 71 79 C73 75 72 67 68 61Z" fill="#ffd166"/>
+      <ellipse cx="68" cy="85" rx="8" ry="3" fill="#ffd166" opacity=".25"/>
+    </g>
+    <g id="smokeG1" opacity="0" style="transition:opacity .4s">
+      <circle cx="68" cy="80" r="5" fill="rgba(150,140,170,.75)"/>
+      <circle cx="63" cy="73" r="3.5" fill="rgba(140,130,160,.6)"/>
+    </g>
+    <rect x="63" y="79" width="10" height="36" rx="4" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.8"/>
+    <rect x="63" y="85" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="63" y="94" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="63" y="103" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <line x1="68" y1="79" x2="68" y2="84" stroke="#2d1b4e" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- CANDLE 2 yellow x=96 -->
+    <g id="flameG2">
+      <path d="M96 52 C91 61 88 71 90 78 C93 87 100 87 103 78 C106 69 103 61 96 52Z" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.2">
+        <animateTransform attributeName="transform" type="rotate" values="3 96 78;-3 96 78;3 96 78" dur=".9s" repeatCount="indefinite"/>
+      </path>
+      <path d="M96 59 C93 65 92 74 94 78 C95 82 98 82 99 78 C101 74 100 65 96 59Z" fill="#ffd166"/>
+      <ellipse cx="96" cy="84" rx="8" ry="3" fill="#ffd166" opacity=".25"/>
+    </g>
+    <g id="smokeG2" opacity="0" style="transition:opacity .4s">
+      <circle cx="96" cy="79" r="5" fill="rgba(150,140,170,.75)"/>
+      <circle cx="91" cy="72" r="3.5" fill="rgba(140,130,160,.6)"/>
+    </g>
+    <rect x="91" y="78" width="10" height="37" rx="4" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.8"/>
+    <rect x="91" y="85" width="10" height="3" rx="1" fill="#ff6b9d" opacity=".6"/>
+    <rect x="91" y="94" width="10" height="3" rx="1" fill="#ff6b9d" opacity=".6"/>
+    <rect x="91" y="103" width="10" height="3" rx="1" fill="#ff6b9d" opacity=".6"/>
+    <line x1="96" y1="78" x2="96" y2="83" stroke="#2d1b4e" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- CANDLE 3 mint x=124 -->
+    <g id="flameG3">
+      <path d="M124 54 C119 63 116 72 118 79 C121 87 128 87 131 79 C134 71 131 63 124 54Z" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.2">
+        <animateTransform attributeName="transform" type="rotate" values="-4 124 79;2 124 79;-4 124 79" dur=".7s" repeatCount="indefinite"/>
+      </path>
+      <path d="M124 61 C121 67 120 76 122 79 C123 83 126 83 127 79 C129 76 128 67 124 61Z" fill="#ffd166"/>
+      <ellipse cx="124" cy="85" rx="8" ry="3" fill="#ffd166" opacity=".25"/>
+    </g>
+    <g id="smokeG3" opacity="0" style="transition:opacity .4s">
+      <circle cx="124" cy="80" r="5" fill="rgba(150,140,170,.75)"/>
+      <circle cx="119" cy="73" r="3.5" fill="rgba(140,130,160,.6)"/>
+    </g>
+    <rect x="119" y="79" width="10" height="36" rx="4" fill="#06d6a0" stroke="#2d1b4e" stroke-width="1.8"/>
+    <rect x="119" y="86" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="119" y="95" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="119" y="104" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <line x1="124" y1="79" x2="124" y2="84" stroke="#2d1b4e" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- CANDLE 4 sky x=152 -->
+    <g id="flameG4">
+      <path d="M152 56 C147 65 144 74 146 81 C149 89 156 89 159 81 C162 73 159 65 152 56Z" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.2">
+        <animateTransform attributeName="transform" type="rotate" values="2 152 81;-3 152 81;2 152 81" dur=".85s" repeatCount="indefinite"/>
+      </path>
+      <path d="M152 63 C149 69 148 78 150 81 C151 85 154 85 155 81 C157 78 156 69 152 63Z" fill="#ffd166"/>
+      <ellipse cx="152" cy="87" rx="8" ry="3" fill="#ffd166" opacity=".25"/>
+    </g>
+    <g id="smokeG4" opacity="0" style="transition:opacity .4s">
+      <circle cx="152" cy="82" r="5" fill="rgba(150,140,170,.75)"/>
+      <circle cx="147" cy="75" r="3.5" fill="rgba(140,130,160,.6)"/>
+    </g>
+    <rect x="147" y="81" width="10" height="34" rx="4" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="1.8"/>
+    <rect x="147" y="88" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="147" y="97" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="147" y="106" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <line x1="152" y1="81" x2="152" y2="86" stroke="#2d1b4e" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- CANDLE 5 purple x=180 -->
+    <g id="flameG5">
+      <path d="M180 53 C175 62 172 71 174 78 C177 86 184 86 187 78 C190 70 187 62 180 53Z" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.2">
+        <animateTransform attributeName="transform" type="rotate" values="-2 180 78;4 180 78;-2 180 78" dur=".8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M180 60 C177 66 176 75 178 78 C179 82 182 82 183 78 C185 75 184 66 180 60Z" fill="#ffd166"/>
+      <ellipse cx="180" cy="84" rx="8" ry="3" fill="#ffd166" opacity=".25"/>
+    </g>
+    <g id="smokeG5" opacity="0" style="transition:opacity .4s">
+      <circle cx="180" cy="79" r="5" fill="rgba(150,140,170,.75)"/>
+      <circle cx="175" cy="72" r="3.5" fill="rgba(140,130,160,.6)"/>
+    </g>
+    <rect x="175" y="78" width="10" height="37" rx="4" fill="#9b5de5" stroke="#2d1b4e" stroke-width="1.8"/>
+    <rect x="175" y="85" width="10" height="3" rx="1" fill="#ffd166" opacity=".7"/>
+    <rect x="175" y="94" width="10" height="3" rx="1" fill="#ffd166" opacity=".7"/>
+    <rect x="175" y="103" width="10" height="3" rx="1" fill="#ffd166" opacity=".7"/>
+    <line x1="180" y1="78" x2="180" y2="83" stroke="#2d1b4e" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- CANDLE 6 orange x=208 -->
+    <g id="flameG6">
+      <path d="M208 57 C203 66 200 75 202 82 C205 90 212 90 215 82 C218 74 215 66 208 57Z" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.2">
+        <animateTransform attributeName="transform" type="rotate" values="3 208 82;-2 208 82;3 208 82" dur=".95s" repeatCount="indefinite"/>
+      </path>
+      <path d="M208 64 C205 70 204 79 206 82 C207 86 210 86 211 82 C213 79 212 70 208 64Z" fill="#ffd166"/>
+      <ellipse cx="208" cy="88" rx="8" ry="3" fill="#ffd166" opacity=".25"/>
+    </g>
+    <g id="smokeG6" opacity="0" style="transition:opacity .4s">
+      <circle cx="208" cy="83" r="5" fill="rgba(150,140,170,.75)"/>
+      <circle cx="203" cy="76" r="3.5" fill="rgba(140,130,160,.6)"/>
+    </g>
+    <rect x="203" y="82" width="10" height="33" rx="4" fill="#f77f00" stroke="#2d1b4e" stroke-width="1.8"/>
+    <rect x="203" y="89" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="203" y="98" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <rect x="203" y="107" width="10" height="3" rx="1" fill="white" opacity=".5"/>
+    <line x1="208" y1="82" x2="208" y2="87" stroke="#2d1b4e" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- KOREAN ILLUSTRATION CAKE — page 2 -->
+
+    <!-- ── PLATE ── -->
+    <ellipse cx="145" cy="221" rx="130" ry="13" fill="white" stroke="#2d1b4e" stroke-width="2.5"/>
+    <ellipse cx="145" cy="221" rx="116" ry="9"  fill="none"  stroke="#f0c0cc" stroke-width="2"/>
+
+    <!-- ══ BOTTOM LAYER ══ -->
+    <!-- body -->
+    <rect x="22" y="163" width="246" height="56" rx="8" fill="#f2b8c6" stroke="#2d1b4e" stroke-width="2.5"/>
+    <!-- left-side sheen -->
+    <rect x="22" y="163" width="80" height="56" rx="0" fill="rgba(255,255,255,.15)"/>
+    <!-- wavy frosting drip top of bottom layer -->
+    <path d="M22 163 Q33 178 44 163 Q55 178 66 163 Q77 178 88 163 Q99 178 110 163 Q121 178 132 163 Q143 178 154 163 Q165 178 176 163 Q187 178 198 163 Q209 178 220 163 Q231 174 240 163 Q248 170 258 163 Q263 167 268 163"
+          fill="white" stroke="#2d1b4e" stroke-width="2.2"/>
+    <!-- wavy bottom edge of bottom layer -->
+    <path d="M22 219 Q30 213 38 219 Q46 213 54 219 Q62 213 70 219 Q78 213 86 219 Q94 213 102 219 Q110 213 118 219 Q126 213 134 219 Q142 213 150 219 Q158 213 166 219 Q174 213 182 219 Q190 213 198 219 Q206 213 214 219 Q222 213 230 219 Q238 213 246 219 Q254 213 262 219 Q266 216 268 219"
+          fill="white" stroke="#2d1b4e" stroke-width="2"/>
+    <!-- bottom layer horizontal crease line -->
+    <line x1="22" y1="185" x2="268" y2="185" stroke="rgba(45,27,78,.18)" stroke-width="1.2" stroke-dasharray="6,4"/>
+
+    <!-- bottom layer SPRINKLES -->
+    <!-- oval sprinkles scattered -->
+    <ellipse cx="40"  cy="172" rx="6" ry="3" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-30 40 172)"/>
+    <ellipse cx="70"  cy="177" rx="6" ry="3" fill="#9b5de5" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(20 70 177)"/>
+    <ellipse cx="102" cy="170" rx="6" ry="3" fill="#06d6a0" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-15 102 170)"/>
+    <ellipse cx="200" cy="172" rx="6" ry="3" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(25 200 172)"/>
+    <ellipse cx="232" cy="170" rx="6" ry="3" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-20 232 170)"/>
+    <ellipse cx="255" cy="177" rx="6" ry="3" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(15 255 177)"/>
+    <ellipse cx="48"  cy="205" rx="5" ry="2.5" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(30 48 205)"/>
+    <ellipse cx="82"  cy="200" rx="5" ry="2.5" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-25 82 200)"/>
+    <ellipse cx="210" cy="200" rx="5" ry="2.5" fill="#06d6a0" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(20 210 200)"/>
+    <ellipse cx="248" cy="204" rx="5" ry="2.5" fill="#9b5de5" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-30 248 204)"/>
+    <!-- small round dots -->
+    <circle cx="128" cy="204" r="3.5" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.2"/>
+    <circle cx="162" cy="196" r="3"   fill="#ffd166" stroke="#2d1b4e" stroke-width="1.2"/>
+    <circle cx="178" cy="207" r="3"   fill="#4cc9f0" stroke="#2d1b4e" stroke-width="1.2"/>
+
+    <!-- ══ TOP LAYER ══ -->
+    <!-- body (slightly narrower, sits on bottom layer) -->
+    <rect x="36" y="118" width="218" height="52" rx="8" fill="#f9d0da" stroke="#2d1b4e" stroke-width="2.5"/>
+    <!-- top layer left sheen -->
+    <rect x="36" y="118" width="68" height="52" rx="0" fill="rgba(255,255,255,.18)"/>
+    <!-- wavy frosting drip top of top layer (candles sit above so drips hang down) -->
+    <path d="M36 118 Q47 133 58 118 Q69 133 80 118 Q91 133 102 118 Q113 133 124 118 Q135 133 146 118 Q157 133 168 118 Q179 133 190 118 Q201 133 212 118 Q221 128 230 118 Q237 124 244 118 Q249 122 254 118"
+          fill="white" stroke="#2d1b4e" stroke-width="2.2"/>
+    <!-- bottom edge of top layer (sits above bottom layer) -->
+    <path d="M36 170 Q45 165 54 170 Q63 165 72 170 Q81 165 90 170 Q99 165 108 170 Q117 165 126 170 Q135 165 144 170 Q153 165 162 170 Q171 165 180 170 Q189 165 198 170 Q207 165 216 170 Q225 165 234 170 Q243 165 252 170 Q255 167 254 170"
+          fill="white" stroke="#2d1b4e" stroke-width="2"/>
+    <!-- top layer horizontal crease -->
+    <line x1="36" y1="140" x2="254" y2="140" stroke="rgba(45,27,78,.18)" stroke-width="1.2" stroke-dasharray="6,4"/>
+
+    <!-- top layer SPRINKLES -->
+    <ellipse cx="50"  cy="126" rx="5.5" ry="2.5" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-25 50 126)"/>
+    <ellipse cx="76"  cy="130" rx="5.5" ry="2.5" fill="#9b5de5" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(20 76 130)"/>
+    <ellipse cx="215" cy="127" rx="5.5" ry="2.5" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-20 215 127)"/>
+    <ellipse cx="240" cy="130" rx="5.5" ry="2.5" fill="#06d6a0" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(25 240 130)"/>
+    <ellipse cx="52"  cy="158" rx="5"   ry="2.2" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(30 52 158)"/>
+    <ellipse cx="240" cy="157" rx="5"   ry="2.2" fill="#ffd166" stroke="#2d1b4e" stroke-width="1.2" transform="rotate(-25 240 157)"/>
+    <circle cx="62"  cy="148" r="3" fill="#4cc9f0" stroke="#2d1b4e" stroke-width="1.2"/>
+    <circle cx="232" cy="148" r="3" fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.2"/>
+
+    <!-- ── WHITE OVAL TEXT PANEL (like reference) ── -->
+    <ellipse cx="145" cy="144" rx="72" ry="30" fill="white" stroke="#2d1b4e" stroke-width="2.2"/>
+    <!-- text line 1 -->
+    <text x="145" y="134"
+          text-anchor="middle" dominant-baseline="middle"
+          font-family="'Fredoka One', cursive"
+          font-size="11" fill="#2d1b4e" letter-spacing=".5">happy birthday</text>
+    <!-- text line 2 — bigger, pink -->
+    <text x="145" y="148"
+          text-anchor="middle" dominant-baseline="middle"
+          font-family="'Fredoka One', cursive"
+          font-size="15" fill="#e8507a" letter-spacing="1"
+          stroke="#2d1b4e" stroke-width=".5" paint-order="stroke">Senior</text>
+
+
+    <!-- ── DECORATIVE HEART topper (like unicorn on reference) ── -->
+    <path d="M145 111 C143 108 137 106 137 112 C137 118 143 123 145 125 C147 123 153 118 153 112 C153 106 147 108 145 111Z"
+          fill="#ff6b9d" stroke="#2d1b4e" stroke-width="1.8"/>
+    <circle cx="148" cy="109" r="2" fill="rgba(255,255,255,.65)"/>
+    <!-- small stars flanking topper -->
+    <polygon points="128,113 129.5,117.5 134,117.5 130.5,120.5 131.5,125 128,122.5 124.5,125 125.5,120.5 122,117.5 126.5,117.5" fill="#ffd166" stroke="#2d1b4e" stroke-width="1"/>
+    <polygon points="162,113 163.5,117.5 168,117.5 164.5,120.5 165.5,125 162,122.5 158.5,125 159.5,120.5 156,117.5 160.5,117.5" fill="#ffd166" stroke="#2d1b4e" stroke-width="1"/>
+  </svg>
+
+  <button class="cta purple hidden" id="blowBtn" onclick="blowCandle()">💨 Blow the Candle!</button>
+</div>
+
+<!-- ════ PAGE 3 — COTTAGECORE CARD ════ -->
+<div class="page" id="p3">
+  <div class="bg-dots"></div>
+
+  <!-- ── BOTANICAL BACKGROUND ── -->
+  <!-- top-left greenery cluster -->
+  <svg style="position:absolute;top:-10px;left:-10px;pointer-events:none;z-index:2" width="280" height="200" viewBox="0 0 280 200" fill="none">
+    <!-- branches -->
+    <path d="M10 0 Q40 30 30 80 Q50 50 80 60 Q60 40 90 20" stroke="#7a9e6a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M30 80 Q70 90 100 70 Q80 110 60 120" stroke="#6b8f5a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M80 60 Q110 40 150 50 Q130 70 120 90" stroke="#7a9e6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- leaves -->
+    <ellipse cx="35" cy="45" rx="14" ry="8" fill="#8ab870" opacity=".8" transform="rotate(-30 35 45)"/>
+    <ellipse cx="55" cy="28" rx="12" ry="7" fill="#9dc87a" opacity=".7" transform="rotate(-50 55 28)"/>
+    <ellipse cx="88" cy="38" rx="14" ry="7" fill="#7aaa60" opacity=".8" transform="rotate(20 88 38)"/>
+    <ellipse cx="108" cy="58" rx="13" ry="6" fill="#8ab870" opacity=".75" transform="rotate(-10 108 58)"/>
+    <ellipse cx="130" cy="44" rx="11" ry="6" fill="#9dc87a" opacity=".7" transform="rotate(30 130 44)"/>
+    <ellipse cx="72" cy="75" rx="13" ry="7" fill="#7aaa60" opacity=".75" transform="rotate(-20 72 75)"/>
+    <ellipse cx="95" cy="82" rx="12" ry="6" fill="#8ab870" opacity=".7" transform="rotate(10 95 82)"/>
+    <ellipse cx="50" cy="95" rx="14" ry="7" fill="#9dc87a" opacity=".7" transform="rotate(-40 50 95)"/>
+    <ellipse cx="68" cy="112" rx="12" ry="6" fill="#7aaa60" opacity=".65" transform="rotate(15 68 112)"/>
+    <!-- pink blossoms -->
+    <circle cx="44" cy="22" r="5" fill="#f4b8c0" opacity=".85" stroke="#e8909a" stroke-width=".8"/>
+    <circle cx="42" cy="20" r="2.5" fill="#ffeef0" opacity=".9"/>
+    <circle cx="120" cy="68" r="5.5" fill="#f4b8c0" opacity=".8" stroke="#e8909a" stroke-width=".8"/>
+    <circle cx="118" cy="66" r="2.5" fill="#ffeef0" opacity=".9"/>
+    <circle cx="78" cy="55" r="4.5" fill="#f9d0d8" opacity=".8"/>
+    <circle cx="100" cy="95" r="5" fill="#f4b8c0" opacity=".75"/>
+  </svg>
+
+  <!-- top-right greenery cluster -->
+  <svg style="position:absolute;top:-10px;right:-10px;pointer-events:none;z-index:2" width="280" height="200" viewBox="0 0 280 200" fill="none">
+    <path d="M270 0 Q240 30 250 80 Q230 50 200 60 Q220 40 190 20" stroke="#7a9e6a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M250 80 Q210 90 180 70 Q200 110 220 120" stroke="#6b8f5a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M200 60 Q170 40 130 50 Q150 70 160 90" stroke="#7a9e6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="245" cy="45" rx="14" ry="8" fill="#8ab870" opacity=".8" transform="rotate(30 245 45)"/>
+    <ellipse cx="225" cy="28" rx="12" ry="7" fill="#9dc87a" opacity=".7" transform="rotate(50 225 28)"/>
+    <ellipse cx="192" cy="38" rx="14" ry="7" fill="#7aaa60" opacity=".8" transform="rotate(-20 192 38)"/>
+    <ellipse cx="172" cy="58" rx="13" ry="6" fill="#8ab870" opacity=".75" transform="rotate(10 172 58)"/>
+    <ellipse cx="150" cy="44" rx="11" ry="6" fill="#9dc87a" opacity=".7" transform="rotate(-30 150 44)"/>
+    <ellipse cx="208" cy="75" rx="13" ry="7" fill="#7aaa60" opacity=".75" transform="rotate(20 208 75)"/>
+    <ellipse cx="185" cy="82" rx="12" ry="6" fill="#8ab870" opacity=".7" transform="rotate(-10 185 82)"/>
+    <ellipse cx="230" cy="95" rx="14" ry="7" fill="#9dc87a" opacity=".7" transform="rotate(40 230 95)"/>
+    <circle cx="236" cy="22" r="5" fill="#f4b8c0" opacity=".85" stroke="#e8909a" stroke-width=".8"/>
+    <circle cx="238" cy="20" r="2.5" fill="#ffeef0" opacity=".9"/>
+    <circle cx="160" cy="68" r="5.5" fill="#f4b8c0" opacity=".8" stroke="#e8909a" stroke-width=".8"/>
+    <circle cx="200" cy="55" r="4.5" fill="#f9d0d8" opacity=".8"/>
+    <circle cx="180" cy="95" r="5" fill="#f4b8c0" opacity=".75"/>
+  </svg>
+
+  <!-- STRING LIGHTS -->
+  <svg class="string-lights" viewBox="0 0 900 80" preserveAspectRatio="none">
+    <!-- two cords -->
+    <path d="M0 8 Q225 28 450 8 Q675 28 900 8" stroke="#8b6a40" stroke-width="1.8" fill="none"/>
+    <path d="M0 18 Q225 38 450 18 Q675 38 900 18" stroke="#8b6a40" stroke-width="1.5" fill="none" opacity=".5"/>
+    <!-- bulbs (bracket + glass) -->
+    <g opacity=".9">
+      <!-- bulb 1 -->
+      <line x1="80" y1="10" x2="80" y2="22" stroke="#8b6a40" stroke-width="1.5"/>
+      <rect x="77" y="22" width="6" height="4" rx="1" fill="#a07840"/>
+      <ellipse cx="80" cy="34" rx="9" ry="11" fill="#fff8d0" stroke="#c8a050" stroke-width="1"/>
+      <ellipse cx="80" cy="34" rx="5" ry="7" fill="#fffce0" opacity=".8"/>
+      <!-- bulb 2 -->
+      <line x1="190" y1="18" x2="190" y2="30" stroke="#8b6a40" stroke-width="1.5"/>
+      <rect x="187" y="30" width="6" height="4" rx="1" fill="#a07840"/>
+      <ellipse cx="190" cy="42" rx="9" ry="11" fill="#fff8d0" stroke="#c8a050" stroke-width="1"/>
+      <ellipse cx="190" cy="42" rx="5" ry="7" fill="#fffce0" opacity=".8"/>
+      <!-- bulb 3 -->
+      <line x1="320" y1="16" x2="320" y2="28" stroke="#8b6a40" stroke-width="1.5"/>
+      <rect x="317" y="28" width="6" height="4" rx="1" fill="#a07840"/>
+      <ellipse cx="320" cy="40" rx="9" ry="11" fill="#fff8d0" stroke="#c8a050" stroke-width="1"/>
+      <ellipse cx="320" cy="40" rx="5" ry="7" fill="#fffce0" opacity=".8"/>
+      <!-- bulb 4 (centre) -->
+      <line x1="450" y1="10" x2="450" y2="22" stroke="#8b6a40" stroke-width="1.5"/>
+      <rect x="447" y="22" width="6" height="4" rx="1" fill="#a07840"/>
+      <ellipse cx="450" cy="34" rx="9" ry="11" fill="#fff8d0" stroke="#c8a050" stroke-width="1"/>
+      <ellipse cx="450" cy="34" rx="5" ry="7" fill="#fffce0" opacity=".8"/>
+      <!-- bulb 5 -->
+      <line x1="580" y1="16" x2="580" y2="28" stroke="#8b6a40" stroke-width="1.5"/>
+      <rect x="577" y="28" width="6" height="4" rx="1" fill="#a07840"/>
+      <ellipse cx="580" cy="40" rx="9" ry="11" fill="#fff8d0" stroke="#c8a050" stroke-width="1"/>
+      <ellipse cx="580" cy="40" rx="5" ry="7" fill="#fffce0" opacity=".8"/>
+      <!-- bulb 6 -->
+      <line x1="710" y1="18" x2="710" y2="30" stroke="#8b6a40" stroke-width="1.5"/>
+      <rect x="707" y="30" width="6" height="4" rx="1" fill="#a07840"/>
+      <ellipse cx="710" cy="42" rx="9" ry="11" fill="#fff8d0" stroke="#c8a050" stroke-width="1"/>
+      <ellipse cx="710" cy="42" rx="5" ry="7" fill="#fffce0" opacity=".8"/>
+      <!-- bulb 7 -->
+      <line x1="820" y1="10" x2="820" y2="22" stroke="#8b6a40" stroke-width="1.5"/>
+      <rect x="817" y="22" width="6" height="4" rx="1" fill="#a07840"/>
+      <ellipse cx="820" cy="34" rx="9" ry="11" fill="#fff8d0" stroke="#c8a050" stroke-width="1"/>
+      <ellipse cx="820" cy="34" rx="5" ry="7" fill="#fffce0" opacity=".8"/>
+    </g>
+  </svg>
+
+  <button class="back-btn" style="background:#5c3d1e;color:#fff;border:none" onclick="goto(2)">&#8592; Back</button>
+  <div class="pg-count" style="background:#c8965a;border:2px solid #7a4c1c;color:#3d1e00;box-shadow:2px 2px 0 #7a4c1c">03 / 03</div>
+
+
+ 
+
+  <!-- TITLE -->
+  <div style="text-align:center;margin-bottom:.8rem;margin-top:52px;position:relative;z-index:10">
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.1rem;color:#3d2a1a;font-style:italic;text-shadow:1px 1px 0 rgba(200,160,100,.3)">
+      &#127807; A Message For You &#128140;
+    </div>
+    <div style="font-size:.68rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#9b6a4a;margin-top:4px">
+      &#10022; CLICK THE CARD TO OPEN IT &#10022;
+    </div>
+  </div>
+
+  <!-- DOUBLE-DOOR CARD — cottagecore style -->
+  <div class="card-scene" id="cardScene" style="z-index:10">
+
+    <!-- INSIDE MESSAGE -->
+    <div class="card-inside" id="cardInside">
+      <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.35rem;color:#3d2a1a;line-height:1.3;text-align:center;font-style:italic;margin-top:-50px">
+        Happy Birthday,<br>Senior!
+      </div>
+      <div style="width:70px;height:1.5px;background:linear-gradient(90deg,transparent,#c8965a,transparent);margin:2px 0"></div>
+      <div style="font-size:.98rem;font-weight:600;color:#7a5030;line-height:1.95;text-align:center;letter-spacing:.04em;font-family:'Nunito',sans-serif">
+        Senior message la enna ezhuthanum nu theriyala . Aana indha varusham full ah happy ah irunga, eppovum sirichite irunga &#10024;
+      </div>
+      <div style="font-family:'Playfair Display',Georgia,serif;font-size:.88rem;color:#b07840;font-style:italic">&#8212;  By junior</div>
+
+    </div>
+
+    <!-- LEFT DOOR — warm cream with botanical -->
+    <div class="door-left" id="doorLeft" onclick="openCard()">
+      <svg width="100%" height="100%" viewBox="0 0 180 310" preserveAspectRatio="none" fill="none">
+        <defs>
+          <linearGradient id="lgL" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fdf6ec"/>
+            <stop offset="100%" stop-color="#f5e8d4"/>
+          </linearGradient>
+        </defs>
+        <!-- door body -->
+        <rect width="180" height="310" rx="12" fill="url(#lgL)"/>
+        <!-- aged paper texture overlay -->
+        <rect width="180" height="310" rx="12" fill="none" stroke="#d4a870" stroke-width="2"/>
+        <!-- inner decorative border — thin gold double line -->
+        <rect x="10" y="10" width="160" height="290" rx="8" fill="none" stroke="#c8a050" stroke-width=".8" opacity=".6"/>
+        <rect x="13" y="13" width="154" height="284" rx="6" fill="none" stroke="#c8a050" stroke-width=".5" opacity=".4"/>
+        <!-- corner ornaments -->
+        <!-- top-left -->
+        <path d="M14 22 Q20 14 28 14" stroke="#c8a050" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M14 22 L14 30" stroke="#c8a050" stroke-width="1" fill="none"/>
+        <!-- top-right -->
+        <path d="M166 22 Q160 14 152 14" stroke="#c8a050" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M166 22 L166 30" stroke="#c8a050" stroke-width="1" fill="none"/>
+        <!-- bottom-left -->
+        <path d="M14 288 Q20 296 28 296" stroke="#c8a050" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M14 288 L14 280" stroke="#c8a050" stroke-width="1" fill="none"/>
+        <!-- bottom-right -->
+        <path d="M166 288 Q160 296 152 296" stroke="#c8a050" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M166 288 L166 280" stroke="#c8a050" stroke-width="1" fill="none"/>
+        <!-- right-edge seam (where doors meet) — warm brown strip -->
+        <rect x="168" y="0" width="12" height="310" rx="0" fill="#c8965a" opacity=".9"/>
+        <!-- gold heart clasp at seam centre -->
+        <ellipse cx="174" cy="155" rx="10" ry="12" fill="#d4a840" stroke="#b08020" stroke-width="1.5"/>
+        <path d="M174 151 C173 149 170 148 170 151 C170 154 173 156.5 174 158 C175 156.5 178 154 178 151 C178 148 175 149 174 151Z" fill="#8b5a1a"/>
+        <!-- "TO" small label -->
+        <text x="90" y="84" text-anchor="middle"
+              font-family="Georgia,serif" font-size="11" fill="#8b6040" letter-spacing="4" opacity=".7">TO</text>
+        <!-- "Senior" calligraphic -->
+        <text x="90" y="132" text-anchor="middle"
+              font-family="Georgia,serif" font-size="28" fill="#c04060" font-style="italic"
+              letter-spacing="1">Senior</text>
+        <!-- small heart below name -->
+        <path d="M90 144 C89 142.5 86 141.5 86 144 C86 146.5 89 148.5 90 149.5 C91 148.5 94 146.5 94 144 C94 141.5 91 142.5 90 144Z" fill="#c04060" opacity=".7"/>
+        <!-- botanical flower illustration (bottom) -->
+        <!-- stem -->
+        <path d="M90 280 Q85 260 78 240 Q72 222 68 205" stroke="#8ab870" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M90 280 Q94 258 98 238 Q102 218 106 202" stroke="#7aaa60" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M85 258 Q76 252 68 248" stroke="#8ab870" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M94 248 Q104 244 112 242" stroke="#7aaa60" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- leaves -->
+        <ellipse cx="75" cy="252" rx="12" ry="5.5" fill="#8ab870" opacity=".75" transform="rotate(-35 75 252)"/>
+        <ellipse cx="106" cy="246" rx="12" ry="5" fill="#9dc87a" opacity=".7" transform="rotate(25 106 246)"/>
+        <ellipse cx="70" cy="228" rx="10" ry="4.5" fill="#7aaa60" opacity=".7" transform="rotate(-50 70 228)"/>
+        <ellipse cx="104" cy="222" rx="10" ry="4.5" fill="#8ab870" opacity=".65" transform="rotate(40 104 222)"/>
+        <!-- pink cosmos at top of flower -->
+        <g transform="translate(68,200)">
+          <circle cx="0" cy="-6" r="5" fill="#f4b8c0"/>
+          <circle cx="5" cy="-3" r="5" fill="#fbc8d0"/>
+          <circle cx="5" cy="3" r="5" fill="#f4b8c0"/>
+          <circle cx="0" cy="6" r="5" fill="#fbc8d0"/>
+          <circle cx="-5" cy="3" r="5" fill="#f4b8c0"/>
+          <circle cx="-5" cy="-3" r="5" fill="#fbc8d0"/>
+          <circle cx="0" cy="0" r="6.5" fill="#ffeef2"/>
+          <circle cx="0" cy="0" r="3.5" fill="#e88098"/>
+        </g>
+        <g transform="translate(106,196)">
+          <circle cx="0" cy="-5" r="4" fill="#f9c8d4"/>
+          <circle cx="4" cy="-2" r="4" fill="#f4b8c0"/>
+          <circle cx="4" cy="3" r="4" fill="#f9c8d4"/>
+          <circle cx="0" cy="5" r="4" fill="#f4b8c0"/>
+          <circle cx="-4" cy="3" r="4" fill="#f9c8d4"/>
+          <circle cx="-4" cy="-2" r="4" fill="#f4b8c0"/>
+          <circle cx="0" cy="0" r="5.5" fill="#fff0f4"/>
+          <circle cx="0" cy="0" r="3" fill="#e07090"/>
+        </g>
+        <!-- TAP hint -->
+        <path d="M50 296 L72 296" stroke="#c8a050" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+        <text x="90" y="300" text-anchor="middle"
+              font-family="Nunito,sans-serif" font-size="8.5" font-weight="800"
+              fill="#9b7040" letter-spacing="1.5" opacity=".7">&#10095; TAP TO OPEN &#10094;</text>
+        <path d="M108 296 L130 296" stroke="#c8a050" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+      </svg>
+    </div>
+
+    <!-- RIGHT DOOR — sage green with botanical -->
+    <div class="door-right" id="doorRight" onclick="openCard()">
+      <svg width="100%" height="100%" viewBox="0 0 180 310" preserveAspectRatio="none" fill="none">
+        <defs>
+          <linearGradient id="lgR" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d8e8d4"/>
+            <stop offset="100%" stop-color="#c4d8bc"/>
+          </linearGradient>
+        </defs>
+        <rect width="180" height="310" rx="12" fill="url(#lgR)"/>
+        <rect width="180" height="310" rx="12" fill="none" stroke="#a0b890" stroke-width="2"/>
+        <!-- inner border -->
+        <rect x="10" y="10" width="160" height="290" rx="8" fill="none" stroke="#a0b890" stroke-width=".8" opacity=".6"/>
+        <rect x="13" y="13" width="154" height="284" rx="6" fill="none" stroke="#a0b890" stroke-width=".5" opacity=".4"/>
+        <!-- corner ornaments -->
+        <path d="M14 22 Q20 14 28 14" stroke="#90a880" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M14 22 L14 30" stroke="#90a880" stroke-width="1" fill="none"/>
+        <path d="M166 22 Q160 14 152 14" stroke="#90a880" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M166 22 L166 30" stroke="#90a880" stroke-width="1" fill="none"/>
+        <path d="M14 288 Q20 296 28 296" stroke="#90a880" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M14 288 L14 280" stroke="#90a880" stroke-width="1" fill="none"/>
+        <path d="M166 288 Q160 296 152 296" stroke="#90a880" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M166 288 L166 280" stroke="#90a880" stroke-width="1" fill="none"/>
+        <!-- left-edge seam -->
+        <rect x="0" y="0" width="12" height="310" fill="#c8965a" opacity=".9"/>
+        <!-- small dots scattered — like starlight -->
+        <circle cx="40" cy="40" r="1.5" fill="#c8d8b0" opacity=".7"/>
+        <circle cx="130" cy="55" r="1.5" fill="#c8d8b0" opacity=".7"/>
+        <circle cx="70" cy="170" r="1.5" fill="#c8d8b0" opacity=".6"/>
+        <circle cx="150" cy="185" r="1.5" fill="#c8d8b0" opacity=".6"/>
+        <circle cx="50" cy="250" r="1.5" fill="#c8d8b0" opacity=".6"/>
+        <circle cx="140" cy="240" r="1.5" fill="#c8d8b0" opacity=".6"/>
+        <!-- "HAPPY" -->
+        <text x="90" y="78" text-anchor="middle"
+              font-family="Georgia,serif" font-size="14" fill="#3d5030" letter-spacing="3" opacity=".8">HAPPY</text>
+        <!-- "Birthday!" calligraphic -->
+        <text x="90" y="128" text-anchor="middle"
+              font-family="Georgia,serif" font-size="26" fill="#3d5030" font-style="italic">Birthday!</text>
+        <!-- small heart below -->
+        <path d="M90 142 C89 140 86 139 86 142 C86 145 89 147 90 148 C91 147 94 145 94 142 C94 139 91 140 90 142Z" fill="#c04060" opacity=".7"/>
+        <!-- botanical branch illustration (bottom half) -->
+        <path d="M90 280 Q86 262 80 245 Q74 228 72 210" stroke="#6b8f5a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M90 280 Q95 260 100 242 Q106 222 108 208" stroke="#7a9e6a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M84 260 Q76 254 70 252" stroke="#6b8f5a" stroke-width="1.5" fill="none"/>
+        <path d="M95 250 Q104 246 112 245" stroke="#7a9e6a" stroke-width="1.5" fill="none"/>
+        <path d="M82 242 Q74 238 68 238" stroke="#6b8f5a" stroke-width="1.5" fill="none"/>
+        <path d="M98 236 Q106 233 113 234" stroke="#7a9e6a" stroke-width="1.5" fill="none"/>
+        <!-- leaves (outlined style matching reference) -->
+        <path d="M74 254 Q64 248 60 238 Q70 242 74 254Z" fill="none" stroke="#6b8f5a" stroke-width="1.5"/>
+        <path d="M106 248 Q116 243 120 233 Q110 238 106 248Z" fill="none" stroke="#7a9e6a" stroke-width="1.5"/>
+        <path d="M70 240 Q62 236 60 226 Q68 231 70 240Z" fill="none" stroke="#6b8f5a" stroke-width="1.4"/>
+        <path d="M110 237 Q118 233 122 222 Q114 228 110 237Z" fill="none" stroke="#7a9e6a" stroke-width="1.4"/>
+        <path d="M74 218 Q66 215 64 205 Q72 210 74 218Z" fill="none" stroke="#6b8f5a" stroke-width="1.4"/>
+        <path d="M106 216 Q114 213 116 202 Q108 208 106 216Z" fill="none" stroke="#7a9e6a" stroke-width="1.4"/>
+        <!-- small berry dots -->
+        <circle cx="76" cy="218" r="3" fill="#8ab870" opacity=".75"/>
+        <circle cx="80" cy="213" r="2.5" fill="#9dc87a" opacity=".7"/>
+        <circle cx="104" cy="215" r="3" fill="#7aaa60" opacity=".75"/>
+        <circle cx="100" cy="210" r="2.5" fill="#8ab870" opacity=".7"/>
+        <!-- TAP hint -->
+        <path d="M50 296 L72 296" stroke="#90a880" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+        <text x="90" y="300" text-anchor="middle"
+              font-family="Nunito,sans-serif" font-size="8.5" font-weight="800"
+              fill="#6b8050" letter-spacing="1.5" opacity=".8">&#10095; TAP TO OPEN &#10094;</text>
+        <path d="M108 296 L130 296" stroke="#90a880" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- hint label — styled like reference pill -->
+  <div style="position:relative;z-index:10;margin-top:.9rem">
+    <div style="background:rgba(253,246,236,.9);border:1.5px solid #d4a870;border-radius:50px;padding:6px 22px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+      <span style="font-size:.8rem">&#127807;</span>
+      <span style="font-family:'Playfair Display',Georgia,serif;font-size:.8rem;color:#7a5030;font-style:italic" id="cardHint">Click a door to open</span>
+      <span style="font-size:.8rem">&#128150;</span>
+    </div>
+  </div>
+
+  <!-- Restart button -->
+  <button class="cta hidden" id="restartBtn" onclick="restartShow()"
+    style="background:#c8965a;color:white;border:2px solid #7a4c1c;box-shadow:3px 3px 0 #7a4c1c;margin-top:.8rem;font-size:.85rem;position:relative;z-index:10">
+    &#127881; Start Again &#8635;
+  </button>
+</div>
+
+
+<script>
+/* ── CONFETTI ── */
+const cvs = document.getElementById('cc');
+const cctx = cvs.getContext('2d');
+let pieces = [];
+function resizeCC(){cvs.width=innerWidth;cvs.height=innerHeight;}
+resizeCC(); window.addEventListener('resize',resizeCC);
+
+const COLS = ['#ff6b9d','#ffd166','#06d6a0','#4cc9f0','#9b5de5','#f77f00','#ef233c','#fff'];
+function launchConfetti(n=100){
+  for(let i=0;i<n;i++) pieces.push({
+    x:Math.random()*cvs.width, y:-16,
+    w:7+Math.random()*9, h:4+Math.random()*6,
+    col:COLS[~~(Math.random()*COLS.length)],
+    rot:Math.random()*Math.PI*2,
+    vx:(Math.random()-.5)*5, vy:3+Math.random()*4,
+    vr:(Math.random()-.5)*.18,
+    shape:Math.random()>.5?'rect':'circle'
+  });
+  if(pieces.length === n) requestAnimationFrame(loopCC);
+}
+function loopCC(){
+  cctx.clearRect(0,0,cvs.width,cvs.height);
+  let alive=false;
+  pieces.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.vy+=.07;
+    if(p.y<cvs.height+20) alive=true;
+    cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.rot);
+    cctx.globalAlpha=Math.max(0,1-p.y/(cvs.height*1.1));
+    cctx.fillStyle=p.col;
+    if(p.shape==='circle'){cctx.beginPath();cctx.arc(0,0,p.w/2,0,Math.PI*2);cctx.fill();}
+    else {cctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);}
+    cctx.restore();
+  });
+  pieces=pieces.filter(p=>p.y<cvs.height+20);
+  if(alive) requestAnimationFrame(loopCC);
+  else cctx.clearRect(0,0,cvs.width,cvs.height);
+}
+
+/* ── NAVIGATION ── */
+let curPage=1;
+function goto(n){
+  document.getElementById('p'+curPage).classList.remove('active');
+  curPage=n;
+  document.getElementById('p'+n).classList.add('active');
+  if(n===2) initP2();
+  if(n===3) initP3();
+}
+
+/* ── PAGE 1 ── */
+let giftDone=false;
+function openGift(){
+  if(giftDone) return; giftDone=true;
+  document.getElementById('giftBox').classList.add('opened');
+  document.getElementById('hint1').style.opacity='0';
+  setTimeout(()=>{document.getElementById('burst').classList.add('show');launchConfetti(110);},300);
+  setTimeout(()=>{const b=document.getElementById('cta1');b.classList.remove('hidden');b.classList.add('visible');},1000);
+}
+
+/* ── PAGE 2 ── */
+let p2init=false, wTimer=null, wSecs=5;
+const CIRC=2*Math.PI*23; // r=23
+function initP2(){
+  if(p2init) return; p2init=true;
+  document.getElementById('ringFg').style.strokeDashoffset='0';
+  document.getElementById('ringNum').textContent='5';
+  wSecs=5;
+  wTimer=setInterval(()=>{
+    wSecs--;
+    document.getElementById('ringFg').style.strokeDashoffset=CIRC*(1-wSecs/5);
+    document.getElementById('ringNum').textContent=wSecs>0?wSecs:'✓';
+    if(wSecs<=0){
+      clearInterval(wTimer);
+      document.getElementById('ringFg').style.stroke='var(--mint)';
+      const b=document.getElementById('blowBtn');
+      b.classList.remove('hidden'); b.classList.add('visible');
+    }
+  },1000);
+}
+
+let blown=false;
+function blowCandle(){
+  if(blown) return; blown=true;
+  // hide all 6 flames, show all 6 smokes with staggered timing
+  for(let i=1;i<=6;i++){
+    const delay=i*80;
+    setTimeout(()=>{
+      const fg=document.getElementById('flameG'+i);
+      if(fg) fg.style.cssText='opacity:0;transition:opacity .3s';
+      const sg=document.getElementById('smokeG'+i);
+      if(sg){sg.style.opacity='1';}
+    },delay);
+    setTimeout(()=>{
+      const sg=document.getElementById('smokeG'+i);
+      if(sg) sg.style.opacity='0';
+    },delay+1200);
+  }
+  document.getElementById('blowBtn').disabled=true;
+  launchConfetti(110);
+  setTimeout(()=>goto(3),1800); // was p4 now p3
+}
+
+/* ── PAGE 4 — CARD ── */
+let cardStep=0; // 0=closed, 1=left open, 2=both open
+function openCard(){
+  if(cardStep===0){
+    // 1st click — open left door
+    document.getElementById('doorLeft').classList.add('open');
+    document.getElementById('cardHint').textContent='now tap the right door ✨';
+    cardStep=1;
+  } else if(cardStep===1){
+    // 2nd click — open right door, reveal message
+    document.getElementById('doorRight').classList.add('open');
+    cardStep=2;
+    setTimeout(()=>launchConfetti(80),500);
+    setTimeout(()=>{
+      const rb=document.getElementById('restartBtn');
+      rb.classList.remove('hidden'); rb.classList.add('visible');
+      document.getElementById('cardHint').style.opacity='0';
+    },1000);
+  }
+}
+
+function restartShow(){
+  // Reset all state
+  giftDone=false; p2init=false; blown=false; cardOpened=false;
+  clearInterval(wTimer);
+  // Reset gift box
+  document.getElementById('giftBox').classList.remove('opened');
+  document.getElementById('burst').classList.remove('show');
+  document.getElementById('hint1').style.opacity='1';
+  const c1=document.getElementById('cta1'); c1.classList.add('hidden'); c1.classList.remove('visible');
+  // Reset page 2
+  document.getElementById('flameG1') && [1,2,3,4,5,6].forEach(i=>{
+    const fg=document.getElementById('flameG'+i);
+    if(fg) fg.style.cssText='';
+    const sg=document.getElementById('smokeG'+i);
+    if(sg) sg.style.opacity='0';
+  });
+  const bb=document.getElementById('blowBtn'); bb.classList.add('hidden'); bb.classList.remove('visible'); bb.disabled=false;
+  document.getElementById('ringFg').style.strokeDashoffset='0';
+  document.getElementById('ringFg').style.stroke='var(--pink)';
+  document.getElementById('ringNum').textContent='5';
+  // Reset card
+  cardStep=0;
+  document.getElementById('doorLeft').classList.remove('open');
+  document.getElementById('doorRight').classList.remove('open');
+  document.getElementById('cardHint').style.opacity='1';
+  document.getElementById('cardHint').textContent='Click a door to open';
+  const rb=document.getElementById('restartBtn'); rb.classList.add('hidden'); rb.classList.remove('visible');
+  // Go to page 1
+  goto(1);
+}
+</script>
+</body>
+</html>
